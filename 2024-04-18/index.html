@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --box-size: 70px;
+        }
+        div {
+            width: var(--box-size);
+            aspect-ratio: 1;
+            border: 2px solid black;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        div:last-child {
+            margin-bottom: 0;
+        }
+        div:nth-of-type(2), div:nth-of-type(8) {
+            margin-left: calc(var(--box-size) * 1);
+        }
+        div:nth-of-type(3), div:nth-of-type(7) {
+            margin-left: calc(var(--box-size) * 2);
+        }
+        div:nth-of-type(4), div:nth-of-type(5), div:nth-of-type(6) {
+            margin-left: calc(var(--box-size) * 3);
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <div>box1</div>
+    <div>box2</div>
+    <div>box3</div>
+    <div>box4</div>
+    <div>box5</div>
+    <div>box6</div>
+    <div>box7</div>
+    <div>box8</div>
+    <div>box9</div>
+</body>
+</html>
