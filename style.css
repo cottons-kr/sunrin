@@ -1,0 +1,82 @@
+@font-face {
+    font-family: abster;
+    src: url(font/abster-webfont.woff) format('woff');
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    color: white;
+}
+
+a {
+    text-decoration: none;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 100dvh;
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(images/room.jpg);
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header {
+    position: absolute;
+    width: calc(100% - 100px);
+    height: auto;
+    padding: 10px 50px;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(10px);
+}
+
+.header > h1 img {
+    width: 30px;
+    height: auto;
+    filter: invert(1);
+}
+
+.header ul {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    gap: 20px;
+}
+
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+}
+
+h2 {
+    font-size: 38px;
+}
+
+p {
+    color: rgb(165, 165, 165);
+    font-size: 18px;
+    font-weight: bold;
+}
+
+button {
+    padding: 10px 20px;
+    background: transparent;
+    border: 1px solid white;
+    border-radius: 20px;    
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+button:hover {
+    background-color: white;
+    color: black;
+}
