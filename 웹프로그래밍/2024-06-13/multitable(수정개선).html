@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>multitable.html</title>
+</head>
+<body>
+  <h1>구구단표</h1>
+  <table border="3"></table>
+</body>
+<script>
+  for (let i = 2; i <= 9; i++) {
+    const table = document.querySelector('table');
+    const tr = document.createElement('tr');
+    for (let j = 1; j <= 9; j++) {
+      const td = document.createElement('td');
+      td.textContent = `${i} x ${j} = ${i * j}`;
+      tr.appendChild(td);
+    }
+    table.appendChild(tr);
+  }
+</script>
+</html>

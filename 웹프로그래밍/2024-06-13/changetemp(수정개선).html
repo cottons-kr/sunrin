@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>changetemp.html</title>
+</head>
+<body>
+  <h1>온도 변환기</h1>
+  <label for="temp">온도: </label>
+  <input id="temp" type="number" placeholder="최대온도" name="maxtemp">
+  <hr>
+  <table border="3">
+    <tr>
+      <td>섭씨</td>
+      <td>화씨</td>
+    </tr>
+  </table>
+</body>
+<script>
+  const temp = document.getElementById('temp');
+  const table = document.querySelector('table');
+  temp.addEventListener('input', (e) => {
+    table.innerHTML = '<tr><td>섭씨</td><td>화씨</td></tr>';
+    if (temp.value === '') return;
+    for (let i = 0; i <= temp.value; i++) {
+      const tr = document.createElement('tr');
+      const td1 = document.createElement('td');
+      const td2 = document.createElement('td');
+      td1.textContent = i;
+      td2.textContent = (i * 1.8 + 32).toFixed(2);
+      tr.appendChild(td1);
+      tr.appendChild(td2);
+      table.appendChild(tr);
+    }
+  });
+</script>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>add.html</title>
+</head>
+<body>
+  <h1>덧셈 계산기</h1>
+  <form>
+    <label for="num1">첫번째 숫자: </label>
+    <input id="num1" type="text" name="num1" placeholder="첫번째 숫자">
+    <br>
+    <select name="operator">
+      <option value="add">+</option>
+      <option value="sub">-</option>
+      <option value="mul">*</option>
+      <option value="div">/</option>
+    </select>
+    <br>
+    <label for="num2">두번째 숫자: </label>
+    <input id="num2" type="text" name="num2" placeholder="두번째 숫자">
+    <br>
+    <button type="submit">계산</button>
+  </form>
+</body>
+<script>
+  const form = document.querySelector('form');
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const num1 = parseInt(form.num1.value);
+    const num2 = parseInt(form.num2.value);
+    const operator = form.operator.value;
+    
+    let result;
+    switch(operator) {
+      case 'add':
+        result = num1 + num2;
+        break;
+      case 'sub':
+        result = num1 - num2;
+        break;
+      case 'mul':
+        result = num1 * num2;
+        break;
+      case 'div':
+        result = num1 / num2;
+        break;
+    }
+
+    alert(result);
+  });
+</script>
+</html>
