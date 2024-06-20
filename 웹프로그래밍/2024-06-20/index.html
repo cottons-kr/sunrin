@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+    body {
+      font-family: "Pretendard";
+    }
+  </style>
+  <title>Document</title>
+</head>
+  <h1>랜덤 숫자 맞추기</h1>
+  <input type="number">
+  <button>확인</button>
+  <div id="history"></div>
+  <textarea cols="30" rows="10" placeholder="여기에 메모하세요."></textarea>
+</body>
+<script>
+  const inputRef = document.querySelector("input");
+  const buttonRef = document.querySelector("button");
+  const historyRef = document.querySelector("#history");
+
+  const answer = Math.floor(Math.random() * 100) + 1;
+
+  function onClickButton() {
+    const value = Number(inputRef.value);
+    if (!value || isNaN(value) || value < 0) {
+      pRef.textContent = "유효힌 숫자를 입력해주세요.";
+      return;
+    }
+    
+    /**
+     * @type string
+    */
+    let content;
+    if (value === answer) {
+      content = "정답입니다!";
+    } else if (value < answer) {
+      content = "UP!";
+    } else {
+      content = "DOWN!";
+    }
+
+    const pRef = document.createElement("p");
+    pRef.textContent = `${value} : ${content}`;
+    historyRef.appendChild(pRef);
+  }
+
+  buttonRef.addEventListener("click", onClickButton);
+</script>
+</html>
