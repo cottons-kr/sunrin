@@ -115,7 +115,7 @@
     <script>
         function createAction(action, callback) {
             const span = document.createElement('span')
-            span.classList.add('action')
+            span.classList.add('action') 
             span.innerHTML = action
             resultShower.appendChild(span)
 
@@ -131,7 +131,6 @@
 
         function executeActions() {
             const resultValues = Array.from(resultShower.querySelectorAll('*'))
-            console.log(resultValues)
 
             let result = 0
             let lastNumber = null
@@ -144,16 +143,16 @@
                     if (currentAction) {
                         switch (currentAction) {
                             case '+': {
-                                result += lastNumber
+                                result += numValue
                             }; break
                             case '-': {
-                                result -= lastNumber
+                                result -= numValue
                             }; break
                             case '*': {
-                                result *= lastNumber
+                                result *= numValue
                             }; break
                             case '/': {
-                                result /= lastNumber
+                                result /= numValue
                             }; break
                         }
                         currentAction = null
@@ -162,6 +161,9 @@
                     }
 
                     lastNumber = numValue
+                    if (result === 0) {
+                        result = numValue
+                    }
                 } else {
                     if (lastNumber === null) {
                         throw new Error('Invalid calculation')
@@ -170,9 +172,10 @@
                 }
             }
 
-            console.log('result :', result)
+            while (resultShower.childElementCount > 0) {
+                resultShower.removeChild(resultShower.lastChild)
+            }
 
-            resultShower.childNodes.forEach(c => resultShower.removeChild(c))
             const resultSection = createNumberSection(result)
         }
     </script>
