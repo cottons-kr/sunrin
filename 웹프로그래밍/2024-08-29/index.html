@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        button {
+            font-size: 20px;
+        }
+
+        #buttons {
+            width: 300px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        #buttons button {
+            width: 100px;
+            height: 50px;
+        }
+        
+        #actions {
+            display: flex;
+            margin-top: 20px;
+        }
+        #actions button {
+            width: calc(300px / 5);
+            height: 50px;
+        }
+    </style>
+</head>
+    <body>
+        <div id="result"></div>
+
+        <div id="buttons">
+            <button>9</button>
+            <button>8</button>
+            <button>7</button>
+            <button>6</button>
+            <button>5</button>
+            <button>4</button>
+            <button>3</button>
+            <button>2</button>
+            <button>1</button>
+            <button>+/-</button>
+            <button>0</button>
+            <button>.</button>
+        </div>
+
+        <div id="actions">
+            <button>+</button>
+            <button>-</button>
+            <button>*</button>
+            <button>/</button>
+            <button>=</button>
+        </div>
+    </body>
+    <script>
+        const resultShower = document.querySelector("#result")
+        if (!resultShower) {
+            throw new Error("#result not found")
+        }
+
+        const buttons = Array.from(document.querySelectorAll('#buttons button')).reverse()
+        const numButtons = buttons.slice(3)
+        buttons.forEach(nb => {
+            nb.addEventListener('click', () => {
+                const numberSection = getLastNumberSection()
+                const value = numberSection.innerHTML
+
+                if (value === '0') {
+                    numberSection.innerHTML = ''
+                }
+
+                switch (nb.innerHTML) {
+                    case '+/-': {
+                        if (value.startsWith('-')) {
+                            numberSection.innerHTML = value.slice(1)
+                        } else {
+                            numberSection.innerHTML = `-${value}`
+                        }
+                    }; break
+                    case '.': {
+                        if (!value.includes('.')) {
+                            numberSection.innerHTML += '.'
+                        }
+                    }; break
+                    default: {
+                        numberSection.innerHTML += nb.innerHTML
+                    }
+                }
+            })
+        })
+    </script>
+
+    <script>
+        function createNumberSection(initial) {
+            const span = document.createElement('span')
+            span.classList.add('number-section')
+            span.innerHTML = `${initial || ''}`
+            resultShower.appendChild(span)
+            return span
+        }
+        
+        function getLastNumberSection() {
+            const target = resultShower.querySelector('.number-section:last-child')
+            if (target === null) {
+                return createNumberSection()
+            }
+            return target
+        }
+    </script>
+
+    <script>
+        function createAction(action, callback) {
+            const span = document.createElement('span')
+            span.classList.add('action') 
+            span.innerHTML = action
+            resultShower.appendChild(span)
+
+            callback?.()
+
+            return span
+        }
+
+        function getLastAction() {
+            const target = resultShower.querySelector('.action:last-child')
+            return target
+        }
+
+        function executeActions() {
+            const resultValues = Array.from(resultShower.querySelectorAll('*'))
+
+            let result = 0
+            let lastNumber = null
+            let currentAction = null
+
+            for (let value of resultValues) {
+                if (value.classList.contains('number-section')) {
+                    const numValue = Number(value.innerHTML)
+
+                    if (currentAction) {
+                        switch (currentAction) {
+                            case '+': {
+                                result += numValue
+                            }; break
+                            case '-': {
+                                result -= numValue
+                            }; break
+                            case '*': {
+                                result *= numValue
+                            }; break
+                            case '/': {
+                                result /= numValue
+                            }; break
+                        }
+                        currentAction = null
+                        lastNumber = null
+                        continue
+                    }
+
+                    lastNumber = numValue
+                    if (result === 0) {
+                        result = numValue
+                    }
+                } else {
+                    if (lastNumber === null) {
+                        throw new Error('Invalid calculation')
+                    }
+                    currentAction = value.innerHTML
+                }
+            }
+
+            while (resultShower.childElementCount > 0) {
+                resultShower.removeChild(resultShower.lastChild)
+            }
+
+            const resultSection = createNumberSection(result)
+        }
+    </script>
+
+    <script>
+        const actionButtons = Array.from(document.querySelectorAll("#actions button"))
+        actionButtons.forEach(ab => {
+            ab.addEventListener('click', () => {
+                if (ab.innerHTML === '=') {
+                    executeActions()
+                } else {
+                    createAction(ab.innerHTML, createNumberSection)
+                }
+            })
+        })
+    </script>
+
+    <script>
+        // const resultObserver = new MutationObserver(mutations => {
+        //     for (let mutation of mutations) {
+        //         if (isNaN(Number(mutation.target.nodeValue))) {
+        //             resultShower.innerHTML = '0'
+        //         }
+        //     }
+        // })   
+        // resultObserver.observe(resultShower, { childList: true })
+    </script>
+
+    <script>
+        createNumberSection()
+    </script>
+</html>
