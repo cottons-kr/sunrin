@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>색상 테마 지뢰찾기</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        #game-container {
+            display: inline-grid;
+            gap: 1px;
+            background-color: #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .cell {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #theme-selector {
+            margin-bottom: 20px;
+        }
+        /* 테마 스타일 */
+        .light-theme {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        .light-theme .cell { background-color: #fff; }
+        .dark-theme {
+            background-color: #333;
+            color: #f0f0f0;
+        }
+        .dark-theme .cell { background-color: #555; }
+        .pastel-theme {
+            background-color: #f7e8e8;
+            color: #5a5a5a;
+        }
+        .pastel-theme .cell { background-color: #faf0f0; }
+    </style>
+</head>
+<body class="light-theme">
+    <h1>지뢰찾기</h1>
+    <select id="theme-selector">
+        <option value="light-theme">밝은 테마</option>
+        <option value="dark-theme">어두운 테마</option>
+        <option value="pastel-theme">파스텔 테마</option>
+    </select>
+    <button id="new-game">새로운 게임</button>
+    <div id="game-container"></div>
+
+    <script>
+        const gameContainer = document.getElementById('game-container');
+        const newGameButton = document.getElementById('new-game');
+        const themeSelector = document.getElementById('theme-selector');
+        const rows = 10;
+        const cols = 10;
+        const totalMines = 15;
+        let gameBoard = [];
+        let revealed = 0;
+
+        function createBoard() {
+            gameContainer.innerHTML = '';
+            gameContainer.style.gridTemplateColumns = `repeat(${cols}, auto)`;
+            gameBoard = Array(rows).fill().map(() => Array(cols).fill(0));
+            revealed = 0;
+
+            // 지뢰 배치
+            for (let i = 0; i < totalMines; i++) {
+                let row, col;
+                do {
+                    row = Math.floor(Math.random() * rows);
+                    col = Math.floor(Math.random() * cols);
+                } while (gameBoard[row][col] === -1);
+                gameBoard[row][col] = -1;
+            }
+
+            // 숫자 계산
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < cols; j++) {
+                    if (gameBoard[i][j] === -1) continue;
+                    gameBoard[i][j] = countAdjacentMines(i, j);
+                }
+            }
+
+            // 셀 생성
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < cols; j++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('cell');
+                    cell.dataset.row = i;
+                    cell.dataset.col = j;
+                    cell.addEventListener('click', () => revealCell(i, j));
+                    gameContainer.appendChild(cell);
+                }
+            }
+        }
+
+        function countAdjacentMines(row, col) {
+            let count = 0;
+            for (let i = -1; i <= 1; i++) {
+                for (let j = -1; j <= 1; j++) {
+                    if (i === 0 && j === 0) continue;
+                    const newRow = row + i;
+                    const newCol = col + j;
+                    if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols) {
+                        if (gameBoard[newRow][newCol] === -1) count++;
+                    }
+                }
+            }
+            return count;
+        }
+
+        function revealCell(row, col) {
+            const cell = gameContainer.children[row * cols + col];
+            if (cell.textContent !== '') return;
+
+            if (gameBoard[row][col] === -1) {
+                cell.textContent = '💣';
+                alert('게임 오버!');
+                revealAllMines();
+            } else if (gameBoard[row][col] === 0) {
+                revealAdjacentCells(row, col);
+            } else {
+                cell.textContent = gameBoard[row][col];
+                revealed++;
+            }
+
+            if (revealed === rows * cols - totalMines) {
+                alert('승리!');
+                revealAllMines();
+            }
+        }
+
+        function revealAdjacentCells(row, col) {
+            const cell = gameContainer.children[row * cols + col];
+            if (cell.textContent !== '') return;
+            
+            cell.textContent = gameBoard[row][col] === 0 ? '' : gameBoard[row][col];
+            revealed++;
+
+            if (gameBoard[row][col] === 0) {
+                for (let i = -1; i <= 1; i++) {
+                    for (let j = -1; j <= 1; j++) {
+                        const newRow = row + i;
+                        const newCol = col + j;
+                        if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols) {
+                            revealAdjacentCells(newRow, newCol);
+                        }
+                    }
+                }
+            }
+        }
+
+        function revealAllMines() {
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < cols; j++) {
+                    if (gameBoard[i][j] === -1) {
+                        const cell = gameContainer.children[i * cols + j];
+                        cell.textContent = '💣';
+                    }
+                }
+            }
+        }
+
+        function changeTheme() {
+            document.body.className = themeSelector.value;
+            localStorage.setItem('minesweeperTheme', themeSelector.value);
+        }
+
+        newGameButton.addEventListener('click', createBoard);
+        themeSelector.addEventListener('change', changeTheme);
+
+        // 저장된 테마 불러오기
+        const savedTheme = localStorage.getItem('minesweeperTheme');
+        if (savedTheme) {
+            themeSelector.value = savedTheme;
+            document.body.className = savedTheme;
+        }
+
+        createBoard();
+    </script>
+</body>
+</html>
