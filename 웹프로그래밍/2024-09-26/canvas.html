@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>캔버스</title>
+</head>
+<body>
+  <canvas id="myCanvas" width="1000" height="1000" style="border:1px solid #000000"></canvas>
+  <script>
+    const canvas = document.getElementById('myCanvas')
+    const context = canvas.getContext('2d')
+
+    // hidpi
+    const scale = window.devicePixelRatio
+    canvas.width = 1000 * scale
+    canvas.height = 1000 * scale
+    canvas.style.width = '1000px'
+    canvas.style.height = '1000px'
+    context.scale(scale, scale)
+
+    // 텍스트 추가
+    context.font = '36px -apple-system, sans-serif'
+    context.fillText('Hello World', 10, 50)
+    context.fillText('안녕하세요', 10, 120)
+
+    context.font = '24px -apple-system, sans-serif'
+    context.fillText('작품명 : 비', 10, 190)
+
+    // 삼각형 추가
+    context.beginPath()
+    context.moveTo(100, 100)
+    context.lineTo(200, 100)
+    context.lineTo(150, 200)
+    context.closePath()
+    context.fillStyle = 'red'
+    context.fill()
+
+    // 사각형 추가
+    context.beginPath()
+    context.rect(200, 200, 100, 100)
+    context.fillStyle = 'blue'
+    context.fill()
+
+    function drawRainDrop(x, y) {
+      context.beginPath()
+      context.arc(x, y, 5, 0, Math.PI * 2)
+      context.fillStyle = 'blue'
+      context.fill()
+
+      // move to bottom smoothly
+      const speed = Math.random() * 5 + 1
+      setInterval(() => {
+        context.clearRect(x - 5, y - 5, 10, 10)
+        y += speed
+        context.beginPath()
+        context.arc(x, y, 5, 0, Math.PI * 2)
+        context.fillStyle = 'blue'
+        context.fill()
+      }, 1000 / 60)
+    }
+
+    for (let i = 0; i < 100; i++) {
+      const x = Math.random() * 1000
+      const y = Math.random() * 1000
+      drawRainDrop(x, y)
+    }
+  
+  </script>
+</body>
+</html>
