@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#3</title>
+</head>
+<body>
+  <canvas width="400" height="300"></canvas>
+
+  <script>
+    const canvas = document.querySelector('canvas')
+    const ctx = canvas.getContext('2d')
+
+    ctx.beginPath()
+    ctx.arc(200, 250, 150, Math.PI, 2 * Math.PI)
+    ctx.strokeStyle = 'black'
+    ctx.lineWidth = 20
+    ctx.stroke()
+  </script>
+</body>
+</html>

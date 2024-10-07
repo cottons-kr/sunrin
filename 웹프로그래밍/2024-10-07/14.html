@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#14</title>
+</head>
+<body>
+  <canvas width="1000" height="200"></canvas>
+  <script>
+    const canvas = document.querySelector('canvas')
+    const ctx = canvas.getContext('2d')
+
+    const img = new Image()
+    img.onload = function() {
+      const imgWidth = canvas.width / 5
+      const imgHeight = canvas.height
+      for (let i = 0; i < 5; i++) {
+        ctx.drawImage(img, i * imgWidth, 0, imgWidth, imgHeight)
+      }
+    }
+    img.src = 'image.png'
+  </script>
+</body>
+</html>

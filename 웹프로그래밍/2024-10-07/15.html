@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#15</title>
+</head>
+<body>
+  <canvas width="400" height="350"></canvas>
+  <script>
+    const canvas = document.querySelector('canvas')
+    const ctx = canvas.getContext('2d')
+
+    ctx.fillStyle = 'blue'
+    ctx.fillRect(50, 50, 200, 200)
+
+    ctx.fillStyle = 'red'
+    ctx.save()
+    ctx.translate(150, 250)
+    ctx.rotate(Math.PI / 4)
+    ctx.fillRect(-70, -70, 140, 140)
+    ctx.restore()
+  </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#2</title>
+</head>
+<body>
+  <canvas width="400" height="300"></canvas>
+
+  <script>
+    const canvas = document.querySelector('canvas')
+    const ctx = canvas.getContext('2d')
+    ctx.beginPath()
+    ctx.moveTo(50, 200)
+    ctx.lineTo(200, 200)
+    ctx.lineTo(125, 50)
+    ctx.closePath()
+    ctx.fillStyle = 'orange'
+    ctx.fill()
+    ctx.beginPath()
+    ctx.moveTo(150, 200)
+    ctx.lineTo(300, 200)
+    ctx.lineTo(225, 50)
+    ctx.closePath()
+    ctx.strokeStyle = 'black'
+    ctx.stroke()
+  </script>
+</body>
+</html>
