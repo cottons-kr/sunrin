@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Line</title>
+</head>
+<body>
+  <canvas width="600" height="300"></canvas>
+
+  <script>
+    const canvas = document.querySelector('canvas');
+    const ctx = canvas.getContext('2d');
+
+    for (let i = 0; i < 20; i++) {
+      ctx.lineWidth = 1 + i;
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = `rgb(${Math.floor(255 - 12.75 * i)}, ${Math.floor(255 - 12.75 * i)}, ${Math.floor(255 - 12.75 * i)})`;
+      ctx.beginPath();
+      ctx.moveTo(5 + i * 30, 10);
+      ctx.lineTo(5 + i * 30, 200);
+      ctx.stroke();
+    }
+  </script>
+</body>
+</html>

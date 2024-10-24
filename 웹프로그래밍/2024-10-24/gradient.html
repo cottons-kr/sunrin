@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gradient</title>
+</head>
+<body>
+  <canvas id="canvas" width="400" height="400"></canvas>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    const cellSize = 50;
+    const rows = canvas.height / cellSize;
+    const cols = canvas.width / cellSize;
+
+    ctx.fillStyle = '#000000';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        const x = col * cellSize;
+        const y = row * cellSize;
+
+        const gradient = ctx.createLinearGradient(
+          x, y,        
+          x + cellSize,
+          y + cellSize
+        );
+
+        const hue1 = (row * col * 5) % 360;
+        const hue2 = (hue1 + 40) % 360;
+        gradient.addColorStop(0, `hsla(${hue1}, 70%, 50%, 0.8)`);
+        gradient.addColorStop(1, `hsla(${hue2}, 70%, 50%, 0.8)`);
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(x, y, cellSize, cellSize);
+
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x, y, cellSize, cellSize);
+      }
+    }
+  </script>
+</body>
+</html>
