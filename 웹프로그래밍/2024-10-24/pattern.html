@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pattern</title>
+</head>
+<body>
+  <canvas width="890" height="888"></canvas>
+
+  <script>
+    const canvas = document.querySelector('canvas');
+    const ctx = canvas.getContext('2d');
+    const image = new Image();
+
+    image.onload = () => {
+      const pattern = ctx.createPattern(image, 'repeat');
+      ctx.rect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = pattern;
+      ctx.fill();
+    }
+
+    image.src = 'image.png';
+  </script>
+</body>
+</html>
