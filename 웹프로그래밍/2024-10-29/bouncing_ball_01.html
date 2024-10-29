@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Random Bouncing Ball Example</title>
+  <style>
+    canvas {
+      background: yellow;
+      border: 1px dotted black
+    }
+  </style>
+</head>
+<body>
+  <canvas id='myCanvas' width='500' height='500'></canvas>
+  <div>
+    <label>Speed: <input type='range' min='100' max='1000' value='400' id='speed'></label>
+    <p>Bounced Time : <span id="bounceCount">0</span></p>
+  </div>
+
+  <script>
+    let context
+    let SPEED = 400
+    let velocityX = SPEED * Math.cos(Math.PI / 4)
+    let velocityY = SPEED * Math.sin(Math.PI / 4)
+    let y = 250
+    let x = 250
+    let lastTime = 0
+    let bouncedTime = 0
+    
+    const speedSlider = document.getElementById('speed')
+    const bounceDisplay = document.getElementById('bounceCount')
+    
+    speedSlider.addEventListener('input', function() {
+      SPEED = Number(this.value)
+      const currentAngle = Math.atan2(velocityY, velocityX)
+      updateVelocity(currentAngle)
+    })
+
+    function getRandomAngle(minDegree, maxDegree) {
+      const min = minDegree * Math.PI / 180
+      const max = maxDegree * Math.PI / 180
+      return min + Math.random() * (max - min)
+    }
+
+    function updateVelocity(angle) {
+      velocityX = SPEED * Math.cos(angle)
+      velocityY = SPEED * Math.sin(angle)
+    }
+
+    function incrementBounceCount() {
+      bouncedTime++
+      bounceDisplay.textContent = bouncedTime
+    }
+
+    function draw(currentTime) {
+      if (!lastTime) {
+        lastTime = currentTime
+      }
+      
+      const deltaTime = (currentTime - lastTime) / 1000
+      lastTime = currentTime
+
+      let canvas = document.getElementById('myCanvas')
+      let context = canvas.getContext('2d')
+
+      context.clearRect(0, 0, 500, 500)
+      context.beginPath()
+      context.arc(x, y, 20, 0, Math.PI * 2, true)
+      context.closePath()
+      context.fill()
+
+      let bounced = false
+
+      if (x < 20 || x > 480) {
+        let angle
+        if (x < 20) {
+          angle = getRandomAngle(-75, 75)
+        } else {
+          angle = getRandomAngle(105, 255)
+        }
+        updateVelocity(angle)
+        x = Math.max(20, Math.min(480, x))
+        bounced = true
+      }
+
+      if (y < 20 || y > 480) {
+        let angle
+        if (y < 20) {
+          angle = getRandomAngle(15, 165)
+        } else {
+          angle = getRandomAngle(195, 345)
+        }
+        updateVelocity(angle)
+        y = Math.max(20, Math.min(480, y))
+        bounced = true
+      }
+
+      if (bounced) {
+        incrementBounceCount()
+      }
+
+      x += velocityX * deltaTime
+      y += velocityY * deltaTime
+
+      requestAnimationFrame(draw)
+    }
+
+    requestAnimationFrame(draw)
+  </script>
+</body>
+</html>
